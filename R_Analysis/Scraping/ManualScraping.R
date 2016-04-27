@@ -7,7 +7,7 @@ jsonURL = "http://citibikenyc.com/stations/json"
 
 combineddataset = NULL
 
-for (i in 1:24)
+for (i in 25:100)
 {
   json_data = fromJSON(file = jsonURL)
   
