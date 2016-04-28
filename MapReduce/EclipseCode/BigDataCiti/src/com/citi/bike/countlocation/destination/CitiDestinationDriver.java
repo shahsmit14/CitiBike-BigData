@@ -24,7 +24,7 @@ public class CitiDestinationDriver {
 	{
 		JobClient client = new JobClient();
 		
-		JobConf conf1 = new JobConf(CitiSDDriver.class);
+		JobConf conf1 = new JobConf(CitiDestinationDriver.class);
 		conf1.setJobName("CitiBike-TopRoute-1/2");
 
 		conf1.setMapperClass(CitiDestinationMapper1.class);
@@ -50,7 +50,7 @@ public class CitiDestinationDriver {
 		}
 		
 		
-		JobConf conf2 = new JobConf(CitiSDDriver.class);
+		JobConf conf2 = new JobConf(CitiDestinationDriver.class);
 		conf2.setJobName("CitiBike-TopRoute-2/2");
 
 		conf2.setMapperClass(CitiDestinationMapper2.class);

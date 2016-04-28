@@ -15,7 +15,7 @@ public class CitiSDMapper1 extends MapReduceBase implements Mapper<WritableCompa
 	@Override
 	public void map(WritableComparable key, Writable value, OutputCollector<Text, Text> output, Reporter reporter)
 			throws IOException {
-		
+
 		String data = ((Text)value).toString().trim();
 
 		if(data.length()>0)
@@ -24,13 +24,17 @@ public class CitiSDMapper1 extends MapReduceBase implements Mapper<WritableCompa
 
 			int sourceID = Integer.parseInt(bikeData[4]);
 			int destinationID = Integer.parseInt(bikeData[8]);
-			if(sourceID < destinationID)
+
+			if(sourceID != destinationID)
 			{
-				output.collect(new Text(sourceID + "_" + destinationID), new Text (bikeData[4] + "," + bikeData[5] + "," + bikeData[8] + "," + bikeData[9]));
-			}
-			else
-			{
-				output.collect(new Text(destinationID + "_" + sourceID), new Text (bikeData[8] + "," + bikeData[9] + "," + bikeData[4] + "," + bikeData[5]));
+				if(sourceID < destinationID)
+				{
+					output.collect(new Text(sourceID + "_" + destinationID), new Text (bikeData[4] + "," + bikeData[5] + "," + bikeData[8] + "," + bikeData[9] + "," + bikeData[0]));
+				}
+				else
+				{
+					output.collect(new Text(destinationID + "_" + sourceID), new Text (bikeData[8] + "," + bikeData[9] + "," + bikeData[4] + "," + bikeData[5] + "," + bikeData[0]));
+				}
 			}
 		}
 	}

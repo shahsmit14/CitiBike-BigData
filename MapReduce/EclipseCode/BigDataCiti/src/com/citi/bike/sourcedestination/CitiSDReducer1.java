@@ -16,6 +16,7 @@ public class CitiSDReducer1 extends MapReduceBase implements Reducer<Text, Text,
 			throws IOException {
 
 		int routeCount = 0;
+		double totalDuration = 0;
 		String locationName1 = "";
 		String locationName2 = "";
 		String locationID1 = "";
@@ -35,9 +36,11 @@ public class CitiSDReducer1 extends MapReduceBase implements Reducer<Text, Text,
 			locationName2 = mapperData[3];
 			
 			routeCount = routeCount + 1;
-			
+			totalDuration = totalDuration + Double.valueOf(mapperData[4]);
 		}
 		
-		output.collect(null, new Text(routeCount +"," + locationID1 + "," + locationName1 + "," + locationID2 + "," + locationName2));
+		double averageDuration = totalDuration / routeCount;
+		
+		output.collect(null, new Text(routeCount +"," + locationID1 + "," + locationName1 + "," + locationID2 + "," + locationName2 + "," + averageDuration));
 	}
 }
