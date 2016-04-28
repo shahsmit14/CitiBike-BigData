@@ -109,9 +109,9 @@ public class CitiMapper extends MapReduceBase implements Mapper<WritableComparab
 			DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			DateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 			
-			System.out.println(objBike.getDateValue());
+			//System.out.println(objBike.getDateValue());
 			String dateValue = dateFormat2.format(objBike.getDateValue());
-			System.out.println(dateValue);
+			//System.out.println(dateValue);
 			
 			String outputData = objBike.getTripDuartion() + "," 
 					+ dateValue + ","

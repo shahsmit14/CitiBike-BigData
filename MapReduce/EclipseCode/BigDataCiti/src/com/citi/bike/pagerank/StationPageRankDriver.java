@@ -28,8 +28,9 @@ public class StationPageRankDriver {
 
 		conf1.setNumReduceTasks(5);
 
-		FileInputFormat.setInputPaths(conf1, new Path("CleanedInput"));
-		FileOutputFormat.setOutputPath(conf1, new Path("TempStationGraphInput"));
+		
+		FileInputFormat.setInputPaths(conf1, new Path(args[0]));
+		FileOutputFormat.setOutputPath(conf1, new Path(args[1]));
 
 		client.setConf(conf1);
 
@@ -46,7 +47,7 @@ public class StationPageRankDriver {
 	
 ///*
 		//Station IterMapper and Reducer
-		String input = "TempStationGraphInput";
+		String input = args[1];
 		String output = "";
 		
 		for (int i = 0; i < 4; i++) 
@@ -129,7 +130,7 @@ public class StationPageRankDriver {
 		//conf.setInputPath(new Path(args[0])); 
 		//conf.setOutputPath(new Path(args[1])); 
 		FileInputFormat.setInputPaths(conf3, new Path(output));
-		FileOutputFormat.setOutputPath(conf3, new Path("Station_PageRank"));
+		FileOutputFormat.setOutputPath(conf3, new Path(args[2]));
 
 		conf3.setMapperClass(StationViewerMapper.class); 
 		conf3.setReducerClass(org.apache.hadoop.mapred.lib.IdentityReducer.class); 

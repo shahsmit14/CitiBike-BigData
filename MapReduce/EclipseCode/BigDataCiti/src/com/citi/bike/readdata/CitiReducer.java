@@ -30,7 +30,7 @@ public class CitiReducer extends MapReduceBase implements Reducer<Text, Text, Te
 		{
 			String readData = null;
 			readData = values.next().toString();
-			System.out.println("readDAta" + readData);
+			//System.out.println("readDAta" + readData);
 			output.collect(null, new Text(readData.toString()));
 		}
 	}

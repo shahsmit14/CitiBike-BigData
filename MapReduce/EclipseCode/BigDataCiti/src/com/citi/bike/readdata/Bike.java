@@ -63,7 +63,7 @@ public class Bike
 				temp = dateFormat.parse(dateValue);
 				this.dateValue = temp;
 				
-				System.out.println(this.dateValue);
+				//System.out.println(this.dateValue);
 
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -204,7 +204,7 @@ public class Bike
 		Date date = new Date();
 		
 		int calculatedAge = 2016 - year;
-		System.out.println(calculatedAge);
+		//System.out.println(calculatedAge);
 		
 		if (calculatedAge >= 0 && calculatedAge <=10)
 		{

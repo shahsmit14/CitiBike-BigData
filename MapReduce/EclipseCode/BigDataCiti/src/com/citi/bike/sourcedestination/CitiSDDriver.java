@@ -8,11 +8,6 @@ import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 
-import com.citi.bike.countlocation.CitiLocationDriver;
-import com.citi.bike.countlocation.CitiLocationMapper;
-import com.citi.bike.countlocation.CitiLocationMapper2;
-import com.citi.bike.countlocation.CitiLocationReducer;
-import com.citi.bike.countlocation.CitiLocationReducer2;
 
 public class CitiSDDriver {
 
@@ -31,8 +26,9 @@ public class CitiSDDriver {
 
 		conf1.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf1, new Path("CleanedInput"));
-		FileOutputFormat.setOutputPath(conf1, new Path("TempSDInput"));
+		//CleanedInput TempSDInput TopRouteOutput
+		FileInputFormat.setInputPaths(conf1, new Path(args[0]));
+		FileOutputFormat.setOutputPath(conf1, new Path(args[1]));
 
 		client.setConf(conf1);
 
@@ -60,8 +56,8 @@ public class CitiSDDriver {
 
 		//conf.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf2, new Path("TempSDInput"));
-		FileOutputFormat.setOutputPath(conf2, new Path("TopRouteOutput"));
+		FileInputFormat.setInputPaths(conf2, new Path(args[1]));
+		FileOutputFormat.setOutputPath(conf2, new Path(args[2]));
 
 		client.setConf(conf2);
 

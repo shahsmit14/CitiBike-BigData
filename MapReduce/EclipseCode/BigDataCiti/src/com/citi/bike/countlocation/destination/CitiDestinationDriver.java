@@ -35,8 +35,8 @@ public class CitiDestinationDriver {
 
 		conf1.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf1, new Path("CleanedInput"));
-		FileOutputFormat.setOutputPath(conf1, new Path("TempDestinationInput"));
+		FileInputFormat.setInputPaths(conf1, new Path(args[0]));
+		FileOutputFormat.setOutputPath(conf1, new Path(args[1]));
 
 		client.setConf(conf1);
 
@@ -64,8 +64,8 @@ public class CitiDestinationDriver {
 
 		//conf.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf2, new Path("TempDestinationInput"));
-		FileOutputFormat.setOutputPath(conf2, new Path("TopDestinationOutput"));
+		FileInputFormat.setInputPaths(conf2, new Path(args[1]));
+		FileOutputFormat.setOutputPath(conf2, new Path(args[2]));
 
 		client.setConf(conf2);
 

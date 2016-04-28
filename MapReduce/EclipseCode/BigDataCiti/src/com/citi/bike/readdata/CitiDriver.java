@@ -30,10 +30,10 @@ public class CitiDriver {
 		conf.setOutputKeyClass(Text.class);
 		conf.setOutputValueClass(Text.class);
 
-		//conf.setNumReduceTasks(5);
+		conf.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf, new Path("RawInput"));
-		FileOutputFormat.setOutputPath(conf, new Path("CleanedInput"));
+		FileInputFormat.setInputPaths(conf, new Path(args[0]));
+		FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 
 		client.setConf(conf);
 

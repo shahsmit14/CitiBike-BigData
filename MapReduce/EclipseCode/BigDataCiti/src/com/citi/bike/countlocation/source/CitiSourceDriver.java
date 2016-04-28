@@ -37,8 +37,8 @@ public class CitiSourceDriver {
 		
 		conf1.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf1, new Path("CleanedInput"));
-		FileOutputFormat.setOutputPath(conf1, new Path("TempSourceInput"));
+		FileInputFormat.setInputPaths(conf1, new Path(args[0]));
+		FileOutputFormat.setOutputPath(conf1, new Path(args[1]));
 
 		try 
 		{
@@ -65,10 +65,10 @@ public class CitiSourceDriver {
 		//conf2.setOutputKeyClass(Text.class);
 		//conf2.setOutputValueClass(Text.class);
 
-		//conf.setNumReduceTasks(5);
+		//conf2.setNumReduceTasks(5);
 		
-		FileInputFormat.setInputPaths(conf2, new Path("TempSourceInput"));
-		FileOutputFormat.setOutputPath(conf2, new Path("TopSourceOutput"));
+		FileInputFormat.setInputPaths(conf2, new Path(args[1]));
+		FileOutputFormat.setOutputPath(conf2, new Path(args[2]));
 
 		
 		try 
