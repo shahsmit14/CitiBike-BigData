@@ -206,7 +206,7 @@ public class Bike
 		int calculatedAge = 2016 - year;
 		//System.out.println(calculatedAge);
 		
-		if (calculatedAge >= 0 && calculatedAge <=10)
+		if (calculatedAge > 0 && calculatedAge <=10)
 		{
 			return "0-10";
 		}

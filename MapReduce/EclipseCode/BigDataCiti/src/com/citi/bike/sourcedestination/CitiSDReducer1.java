@@ -21,6 +21,10 @@ public class CitiSDReducer1 extends MapReduceBase implements Reducer<Text, Text,
 		String locationName2 = "";
 		String locationID1 = "";
 		String locationID2 = "";
+		String locationLat1 = "";
+		String locationLong1 = "";
+		String locationLat2 = "";
+		String locationLong2 = "";
 
 		while (values.hasNext())
 		{	
@@ -31,16 +35,20 @@ public class CitiSDReducer1 extends MapReduceBase implements Reducer<Text, Text,
 			
 			locationID1 = mapperData[0];
 			locationName1 = mapperData[1];
+			locationLat1 = mapperData[2];
+			locationLong1 = mapperData[3];
 			
-			locationID2 = mapperData[2];
-			locationName2 = mapperData[3];
+			locationID2 = mapperData[4];
+			locationName2 = mapperData[5];
+			locationLat2 = mapperData[6];
+			locationLong2 = mapperData[7];
 			
 			routeCount = routeCount + 1;
-			totalDuration = totalDuration + Double.valueOf(mapperData[4]);
+			totalDuration = totalDuration + Double.valueOf(mapperData[8]);
 		}
 		
 		double averageDuration = totalDuration / routeCount;
 		
-		output.collect(null, new Text(routeCount +"," + locationID1 + "," + locationName1 + "," + locationID2 + "," + locationName2 + "," + averageDuration));
+		output.collect(null, new Text(routeCount +"," + locationID1 + "," + locationName1 + "," + locationLat1 + "," + locationLong1 + "," + locationID2 + "," + locationName2 + "," + locationLat2 + "," + locationLong2 + "," + averageDuration));
 	}
 }

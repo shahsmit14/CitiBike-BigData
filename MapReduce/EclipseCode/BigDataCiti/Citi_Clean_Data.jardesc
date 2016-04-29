@@ -12,5 +12,6 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=BigDataCiti/src&lt;com.citi.bike.readdata"/>
+        <javaElement handleIdentifier="=BigDataCiti/src&lt;com.citi.bike.dao"/>
     </selectedElements>
 </jardesc>

@@ -50,7 +50,7 @@ public class StationPageRankDriver {
 		String input = args[1];
 		String output = "";
 		
-		for (int i = 0; i < 4; i++) 
+		for (int i = 0; i < 10; i++) 
 		{
 			JobClient client2 = new JobClient();
 			JobConf conf2 = new JobConf(StationPageRankDriver.class);

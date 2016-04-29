@@ -22,7 +22,7 @@ public class CitiSourceMapper1 extends MapReduceBase implements Mapper<WritableC
 		{
 			String[] bikeData = data.split(",");
 
-			output.collect(new Text(bikeData[4]), new Text (bikeData[4] + "," + bikeData[5]));			
+			output.collect(new Text(bikeData[4]), new Text (bikeData[4] + "," + bikeData[5] + "," + bikeData[6] + "," + bikeData[7]));			
 		}
 	}
 }

@@ -18,6 +18,8 @@ public class CitiSourceReducer1 extends MapReduceBase implements Reducer<Text, T
 		int routeCount = 0;
 		String locationName1 = "";
 		String locationID1 = "";
+		String locationLat = "";
+		String locationLong = "";
 		
 		while (values.hasNext())
 		{	
@@ -28,10 +30,12 @@ public class CitiSourceReducer1 extends MapReduceBase implements Reducer<Text, T
 			
 			locationID1 = mapperData[0];
 			locationName1 = mapperData[1];
+			locationLat = mapperData[2];
+			locationLong = mapperData[3];
 			
 			routeCount = routeCount + 1;	
 		}		
 		
-		output.collect(null, new Text(routeCount +"," + locationID1 + "," + locationName1));
+		output.collect(null, new Text(routeCount +"," + locationID1 + "," + locationName1 + "," + locationLat + "," + locationLong));
 	}
 }

@@ -29,11 +29,11 @@ public class CitiSDMapper1 extends MapReduceBase implements Mapper<WritableCompa
 			{
 				if(sourceID < destinationID)
 				{
-					output.collect(new Text(sourceID + "_" + destinationID), new Text (bikeData[4] + "," + bikeData[5] + "," + bikeData[8] + "," + bikeData[9] + "," + bikeData[0]));
+					output.collect(new Text(sourceID + "_" + destinationID), new Text (bikeData[4] + "," + bikeData[5] + "," + bikeData[6] + "," + bikeData[7] + "," + bikeData[8] + "," + bikeData[9] + "," + bikeData[10] + "," + bikeData[11] + "," + bikeData[0]));
 				}
 				else
 				{
-					output.collect(new Text(destinationID + "_" + sourceID), new Text (bikeData[8] + "," + bikeData[9] + "," + bikeData[4] + "," + bikeData[5] + "," + bikeData[0]));
+					output.collect(new Text(destinationID + "_" + sourceID), new Text (bikeData[8] + "," + bikeData[9] + "," + bikeData[10] + "," + bikeData[11] + "," + bikeData[4] + "," + bikeData[5] + "," + bikeData[6] + "," + bikeData[7] + "," + bikeData[0]));
 				}
 			}
 		}

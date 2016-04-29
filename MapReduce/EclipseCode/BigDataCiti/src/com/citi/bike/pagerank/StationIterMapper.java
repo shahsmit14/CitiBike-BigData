@@ -88,7 +88,7 @@ public class StationIterMapper extends MapReduceBase implements Mapper<WritableC
 		} 
 
 		// collect the inlink with its dampening factor, and all outlinks
-		output.collect(new Text(pagetitle), new Text("0.000148221"));//("0.000000481")); //375//481//(".000000075")); //0.000000563 //0.02 to 0.0000000754 
+		output.collect(new Text(pagetitle), new Text("0.000295858"));//507 stations //("0.000000481")); //375//481//(".000000075")); //0.000000563 //0.02 to 0.0000000754 
 		output.collect(new Text(pagetitle), new Text(" " + data));//(" " + data)); 
 	} 
 } 
