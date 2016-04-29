@@ -1,0 +1,132 @@
+Cleaning 
+DROP TABLE IF EXISTS date_wise_trips;
+DROP TABLE IF EXISTS citi_bike_nyc_db.bike_ride;
+DROP TABLE IF EXISTS citi_bike_nyc_db.holiday_weather;
+DROP TABLE IF EXISTS view citi_bike_nyc_db.r_data_analysis;
+
+DROP DATABASE citi_bike_nyc_db;
+Create/Drop Database
+CREATE DATABASE IF NOT EXISTS citi_bike_nyc_db;
+Create/Drop Tables
+CREATE TABLE IF NOT EXISTS citi_bike_nyc_db.bike_ride (trip_duration int, date_ride date, start_time timestamp, stop_time timestamp, start_station_id int, start_station_name String, start_station_lat String, start_station_long String, end_station_id int, end_station_name String, end_station_lat String, end_station_long String, bike_id int, user_type String, birth_year int, gender int, age_group String) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' STORED AS TEXTFILE;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS citi_bike_nyc_db.bike_ride 
+(trip_duration int, date_ride date, start_time timestamp, stop_time timestamp, start_station_id int, start_station_name String, start_station_lat String, start_station_long String, end_station_id int, end_station_name String, end_station_lat String, end_station_long String, bike_id int, user_type String, birth_year int, gender int, age_group String) 
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+LOCATION 's3n://citibikebigdata/output/CleanedInput/';
+
+
+CREATE TABLE IF NOT EXISTS citi_bike_nyc_db.holiday_weather (date_value date, prcp double, snwd double, snow double, temp double, holiday boolean, weekday boolean) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' STORED AS TEXTFILE;
+
+CREATE TABLE IF NOT EXISTS citi_bike_nyc_db.holiday_weather (date_value date, prcp double, snwd double, snow double, temp double, holiday boolean, weekday boolean) 
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+LOCATION 's3n://citibikebigdata/input/Hive/Weather/';
+//Table for number of trips date wise
+CREATE TABLE date_wise_trips AS
+Select date_ride, COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY date_ride;
+Truncate Tables
+TRUNCATE TABLE citi_bike_nyc_db.bike_ride;
+TRUNCATE TABLE citi_bike_nyc_db.holiday_weather;
+TRUNCATE TABLE date_wise_trips;
+Load Data
+LOAD DATA LOCAL INPATH '/home/smit/Documents/BigData/Project/Hive/citibike.csv' OVERWRITE INTO TABLE citi_bike_nyc_db.bike_ride;
+
+LOAD DATA LOCAL INPATH '/home/smit/Documents/BigData/Project/Hive/Weather_Holiday_Data.csv' OVERWRITE INTO TABLE citi_bike_nyc_db.holiday_weather;
+Create Views 
+// view for R data analysis--
+CREATE view citi_bike_nyc_db.r_data_analysis AS
+Select r.date_ride,r.Number_Of_Rides, w.prcp, w.snwd,w.snow,w.temp,w.holiday,w.weekday
+FROM date_wise_trips r, citi_bike_nyc_db.holiday_weather w
+WHERE r.date_ride = w.date_value;
+
+//Not used
+CREATE VIEW citi_bike_nyc_db.ride_weather_temp AS
+SELECT r.trip_duration, r.date_ride, r.start_time,r.stop_time,r.start_station_id, r.start_station_name,r.start_station_lat, r.start_station_long, r.end_station_id, r.end_station_name, r.end_station_lat, r.end_station_long, r.bike_id, r.user_type, r.birth_year, r.gender, r.age_group, w.prcp, w.snwd, w.snow, w.temp, w.holiday, w.weekday 
+FROM citi_bike_nyc_db.bike_ride r, citi_bike_nyc_db.holiday_weather w 
+WHERE r.date_ride = w.date_value;
+Select Table
+SELECT * FROM citi_bike_nyc_db.bike_ride;
+SELECT * FROM citi_bike_nyc_db.holiday_weather;
+
+//SELECT * FROM citi_bike_nyc_db.ride_weather_temp;
+
+SELECT * FROM citi_bike_nyc_db.r_data_analysis;
+Output to a CSV File
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select * from r_data_analysis;
+
+
+
+Analysis
+Number of Trips:
+Gender by Year and Months
+
+select YEAR(date_ride),MONTH(date_ride),gender, COUNT(*) from citi_bike_nyc_db.bike_ride group by YEAR(date_ride),MONTH(date_ride),gender;
+
+ INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1a/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select YEAR(date_ride) as Year_Value,MONTH(date_ride) as Month_Value ,gender, COUNT(*) from citi_bike_nyc_db.bike_ride group by date_ride, gender;
+
+User Type by Year and Months
+
+select YEAR(date_ride),MONTH(date_ride),user_type, COUNT(*) from citi_bike_nyc_db.bike_ride group by YEAR(date_ride),MONTH(date_ride),user_type;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1b/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select YEAR(date_ride),MONTH(date_ride),user_type, COUNT(*) from citi_bike_nyc_db.bike_ride group by YEAR(date_ride),MONTH(date_ride),user_type;
+
+Age Group by Year and Months
+
+select YEAR(date_ride),MONTH(date_ride),age_group, COUNT(*) from citi_bike_nyc_db.bike_ride group by YEAR(date_ride),MONTH(date_ride),age_group;
+
+select age_group, COUNT(*) from citi_bike_nyc_db.bike_ride group by age_group;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1c/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select YEAR(date_ride), MONTH(date_ride), age_group, COUNT(*) from citi_bike_nyc_db.bike_ride group by YEAR(date_ride), MONTH(date_ride), age_group;
+
+
+Holidays by Year
+
+select YEAR(date_ride), holiday, SUM(Number_Of_Rides) from citi_bike_nyc_db.r_data_analysis group by YEAR(date_ride), holiday;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1d/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select YEAR(date_ride), holiday, SUM(Number_Of_Rides) from citi_bike_nyc_db.r_data_analysis group by YEAR(date_ride), holiday;
+
+Weekends by Year
+
+select YEAR(date_ride), weekday, SUM(Number_Of_Rides) from citi_bike_nyc_db.r_data_analysis group by YEAR(date_ride), weekday;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1e/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' select YEAR(date_ride), weekday, SUM(Number_Of_Rides) from citi_bike_nyc_db.r_data_analysis group by YEAR(date_ride), weekday;
+
+Days
+
+Select date_ride, COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY date_ride;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1f/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' Select date_ride, COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY date_ride;
+    
+Type
+Pick-up
+
+Select hour(start_time), COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY hour(start_time);
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1g1/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' Select hour(start_time), COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY hour(start_time);
+
+Drop-off
+
+Select hour(stop_time), COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY hour(stop_time);
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/1g2/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' Select hour(stop_time), COUNT(*) as Number_Of_Rides from citi_bike_nyc_db.bike_ride GROUP BY hour(stop_time);
+
+Trip Duration
+Average by Age Group
+
+Select age_group, AVG(trip_duration) from citi_bike_nyc_db.bike_ride group by age_group;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/2a/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' Select age_group, AVG(trip_duration) from citi_bike_nyc_db.bike_ride group by age_group;
+
+Average by Gender
+
+Select gender, AVG(trip_duration) from citi_bike_nyc_db.bike_ride group by gender;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/2b/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' Select gender, AVG(trip_duration) from citi_bike_nyc_db.bike_ride group by gender;
+
+
+Average by User Type
+
+Select user_type, AVG(trip_duration) from citi_bike_nyc_db.bike_ride group by user_type;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/home/smit/Documents/BigData/Project/Hive/Output/2c/' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' Select user_type, AVG(trip_duration) from citi_bike_nyc_db.bike_ride group by user_type;
+
